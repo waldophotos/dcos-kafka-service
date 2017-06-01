@@ -155,7 +155,7 @@ public class PersistentOfferRequirementProvider implements KafkaOfferRequirement
                         .setVisibility(DiscoveryInfo.Visibility.EXTERNAL)
                         .setName(taskInfo.getName());
                 discoveryInfoBuilder.getPortsBuilder().addPortsBuilder()
-                        .setNumber((int) brokerConfig.getPort())
+                        .setNumber(brokerConfig.getPort().intValue())
                         .setProtocol("tcp")
                         .getLabelsBuilder().addLabelsBuilder()
                                 .setKey("VIP_" + getUUID())
