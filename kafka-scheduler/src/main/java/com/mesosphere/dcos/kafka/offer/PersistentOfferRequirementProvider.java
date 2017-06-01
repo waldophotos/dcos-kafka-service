@@ -149,6 +149,22 @@ public class PersistentOfferRequirementProvider implements KafkaOfferRequirement
 
         taskBuilder.setTaskId(TaskID.newBuilder().setValue("").build()); // Set later by TaskRequirement
 
+        try {
+            if (clusterState.getCapabilities().supportsNamedVips()) {
+                DiscoveryInfo.Builder discoveryInfoBuilder = taskBuilder.getDiscoveryBuilder()
+                        .setVisibility(DiscoveryInfo.Visibility.EXTERNAL)
+                        .setName(taskInfo.getName());
+                discoveryInfoBuilder.getPortsBuilder().addPortsBuilder()
+                        .setNumber((int) brokerConfig.getPort())
+                        .setProtocol("tcp")
+                        .getLabelsBuilder().addLabelsBuilder()
+                                .setKey("VIP_" + getUUID())
+                                .setValue("broker:9092");
+            }
+        } catch (Exception e) {
+            log.error("Error querying for named vip support. Named VIP support will be unavailable.", e);
+        }
+
         taskBuilder.clearExecutor();
 
         // determine our broker id and log dir by searching the prior environment:
