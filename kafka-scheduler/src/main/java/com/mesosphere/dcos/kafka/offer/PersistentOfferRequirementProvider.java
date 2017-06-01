@@ -151,10 +151,10 @@ public class PersistentOfferRequirementProvider implements KafkaOfferRequirement
 
         try {
             if (clusterState.getCapabilities().supportsNamedVips()) {
-                taskBuilder.clearDiscovery();
                 DiscoveryInfo.Builder discoveryInfoBuilder = taskBuilder.getDiscoveryBuilder()
                         .setVisibility(DiscoveryInfo.Visibility.EXTERNAL)
                         .setName(taskInfo.getName());
+                discoveryInfoBuilder.getPortsBuilder().clearPorts();
                 discoveryInfoBuilder.getPortsBuilder().addPortsBuilder()
                         .setNumber(brokerConfig.getPort().intValue())
                         .setProtocol("tcp")
