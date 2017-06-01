@@ -151,6 +151,7 @@ public class PersistentOfferRequirementProvider implements KafkaOfferRequirement
 
         try {
             if (clusterState.getCapabilities().supportsNamedVips()) {
+                taskBuilder.clearDiscovery();
                 DiscoveryInfo.Builder discoveryInfoBuilder = taskBuilder.getDiscoveryBuilder()
                         .setVisibility(DiscoveryInfo.Visibility.EXTERNAL)
                         .setName(taskInfo.getName());
